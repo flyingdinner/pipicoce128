@@ -23,9 +23,6 @@ add_compile_options(-Wall
         -Wno-maybe-uninitialized
         )
 
-# Hardware-specific examples in subdirectories:
 
-add_subdirectory(cmake)
 
-add_subdirectory(i2c)
 
