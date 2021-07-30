@@ -66,7 +66,7 @@ static int addr = 0x27;
 #define LCD_COMMAND    0
 
 #define MAX_LINES      2
-#define MAX_CHARS      16
+#define MAX_CHARS      5
 
 /* Quick helper function for single byte transfers */
 void i2c_write_byte(uint8_t val) {

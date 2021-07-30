@@ -4,10 +4,13 @@
 
 // I2C address
 static const uint8_t ADXL343_ADDR = 0x53;
+
+// Registers
 static const uint8_t REG_DEVID = 0x00;
 static const uint8_t REG_POWER_CTL = 0x2D;
 static const uint8_t REG_DATAX0 = 0x32;
 
+// Other constants
 static const uint8_t DEVID = 0xE5;
 static const float SENSITIVITY_2G = 1.0 / 256;  // (g/LSB)
 static const float EARTH_GRAVITY = 9.80665;     // Earth's gravity in [m/s^2]
@@ -93,10 +96,9 @@ int main() {
     float acc_z_f;
 
     // Pins
-    const uint sda_pin = 1;
-    const uint scl_pin = 2;
-    //y - sda pin : 1
-    //orange - scl pin : 2
+    const uint sda_pin = 16;
+    const uint scl_pin = 17;
+
     // Ports
     i2c_inst_t *i2c = i2c0;
 
