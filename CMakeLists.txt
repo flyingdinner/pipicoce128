@@ -13,8 +13,8 @@ set(PICO_EXAMPLES_PATH ${PROJECT_SOURCE_DIR})
 pico_sdk_init()
 
 include(example_auto_set_url.cmake)
-# Add blink example
-add_subdirectory(blink)
+# Add pipicoce
+add_subdirectory(pipicoce)
 
 
 add_compile_options(-Wall

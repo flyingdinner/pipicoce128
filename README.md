@@ -11,7 +11,7 @@ App|Description | Link to prebuilt UF2
 ---|---|---
 [hello_serial](hello_world/serial) | The obligatory Hello World program for Pico (Output over serial version) | 
 [hello_usb](hello_world/usb) | The obligatory Hello World program for Pico (Output over USB version) | https://rptl.io/pico-hello-usb
-[blink](blink) | Blink an LED on and off. | https://rptl.io/pico-blink
+[pipicoce](pipicoce) | pipicoce an LED on and off. | https://rptl.io/pico-pipicoce
 
 ### ADC
 
@@ -62,7 +62,7 @@ App|Description
 [hello_gpio_irq](gpio/hello_gpio_irq) | Register an interrupt handler to run when a GPIO is toggled.
 [dht_sensor](gpio/dht_sensor) | Use GPIO to bitbang the serial protocol for a DHT temperature/humidity sensor.
 
-See also: [blink](blink), blinking an LED attached to a GPIO.
+See also: [pipicoce](pipicoce), pipicoceing an LED attached to a GPIO.
 
 ### HW divider
 
@@ -97,7 +97,7 @@ App|Description
 
 App|Description
 ---|---
-[blinky](picoboard/blinky)| Blink "hello, world" in Morse code on Pico's LED
+[pipicocey](picoboard/pipicocey)| pipicoce "hello, world" in Morse code on Pico's LED
 [button](picoboard/button)| Use Pico's BOOTSEL button as a regular button input, by temporarily suspending flash access.
 
 ### PIO
@@ -111,7 +111,7 @@ App|Description
 [i2c](pio/i2c)| Scan an I2C bus.
 [logic_analyser](pio/logic_analyser)| Use PIO and DMA to capture a logic trace of some GPIOs, whilst a PWM unit is driving them.
 [manchester_encoding](pio/manchester_encoding)| Send and receive Manchester-encoded serial.
-[pio_blink](pio/pio_blink)| Set up some PIO state machines to blink LEDs at different frequencies, according to delay counts pushed into their FIFOs.
+[pio_pipicoce](pio/pio_pipicoce)| Set up some PIO state machines to pipicoce LEDs at different frequencies, according to delay counts pushed into their FIFOs.
 [pwm](pio/pwm)| Pulse width modulation on PIO. Use it to gradually fade the brightness of an LED.
 [spi](pio/spi)| Use PIO to erase, program and read an external SPI flash chip. A second example runs a loopback test with all four CPHA/CPOL combinations.
 [squarewave](pio/squarewave)| Drive a fast square wave onto a GPIO. This example accesses low-level PIO registers directly, instead of using the SDK functions.
@@ -156,7 +156,7 @@ App|Description
 
 App|Description
 ---|---
-[hello_double_tap](system/hello_double_tap) | An LED blink with the `pico_bootsel_via_double_reset` library linked. This enters the USB bootloader when it detects the system being reset twice in quick succession, which is useful for boards with a reset button but no BOOTSEL button.
+[hello_double_tap](system/hello_double_tap) | An LED pipicoce with the `pico_bootsel_via_double_reset` library linked. This enters the USB bootloader when it detects the system being reset twice in quick succession, which is useful for boards with a reset button but no BOOTSEL button.
 [narrow_io_write](system/narrow_io_write) | Demonstrate the effects of 8-bit and 16-bit writes on a 32-bit IO register.
 [unique_board_id](system/unique_board_id) | Read the 64 bit unique ID from external flash, which serves as a unique identifier for the board.
 ### Timer
