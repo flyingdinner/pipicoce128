@@ -8,6 +8,7 @@
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
+#include "hardware/clocks.h"
 //KOHCTAHTbI
 
 
@@ -30,9 +31,181 @@
  const uint8_t SET_VCOM_DESEL =0xDB;
  const uint8_t SET_CHARGE_PUMP =0x8D;
 const uint8_t SET_DISP_OFFSET =0x8D;
+int countPerSecond = 0;
+void CalculateCPS(){
+    countPerSecond = 0;
+    
+}
 void DisplayPowerON(){
     
 }
+uint8_t _ws[4];
+
+uint8_t *GetSingleNomber (int i){ 
+    
+    switch (i)
+	{
+	case 0:    
+     _ws[0]=0b00000000;
+     _ws[1]=0b11111110;
+     _ws[2]=0b10000010;
+     _ws[3]=0b11111110;
+            
+    break;
+    case 1:
+     _ws[0]=0b00000000;
+     _ws[1]=0b10000000;
+     _ws[2]=0b11111110;
+     _ws[3]=0b10000100;
+          
+    break;
+    case 2:
+    _ws[0]=0b00000000;
+    _ws[1]=0b10001110;
+    _ws[2]=0b10001010;
+    _ws[3]=0b11111010;
+          
+    break;
+    case 3:    
+    _ws[0]=0b00000000;
+    _ws[1]=0b11111110;
+    _ws[2]=0b10010010;
+    _ws[3]=0b10000010;
+     
+    break;
+    case 4:
+    _ws[0]=0b00000000;
+    _ws[1]=0b11111110;
+    _ws[2]=0b00010000;
+    _ws[3]=0b00011100;
+     
+    break;
+    case 5:
+    _ws[0]=0b00000000;
+    _ws[1]=0b11110010;
+    _ws[2]=0b10010010;
+    _ws[3]=0b10011110;
+        
+    break;
+    case 6:
+    _ws[0]=0b00000000;
+    _ws[1]=0b11110010;
+    _ws[2]=0b10010010;
+    _ws[3]=0b11111110;
+       
+    break;
+    case 7:
+    _ws[0]=0b00000000;
+    _ws[1]=0b00000110;
+    _ws[2]=0b11111010;
+    _ws[3]=0b00000010;
+         
+    break;
+    case 8:
+    _ws[0]=0b00000000;
+    _ws[1]=0b11101110;
+    _ws[2]=0b10010010;
+    _ws[3]=0b11101110;
+      
+    break;
+    case 9:
+    _ws[0]=0b00000000;
+    _ws[1]=0b11111110;
+    _ws[2]=0b10010010;
+    _ws[3]=0b10011110;
+
+    break;
+    //
+    default:
+    _ws[0]=0b00000000;
+    _ws[1]=0b00000000;
+    _ws[2]=0b00000000;
+    _ws[3]=0b00000000;
+     
+    break;         
+	};    
+    
+}
+//
+void PrintLitera(uint8_t l[] ){
+    uint8_t w[5];
+    w[0]=0x40;
+    w[1]=l[3];
+    w[2]=l[2];
+    w[3]=l[1];
+    w[4]=l[0];    
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+}
+//
+void WriteComandSingle(int f){
+    uint8_t w[] = {
+        0x80,
+        f,
+             
+    };
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+}
+void WriteComandDuble(int f,int s){
+    uint8_t w[] = {
+        0x80,
+        f,
+        s,        
+    };
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+}
+void WriteComandTriple(int f,int s, int th){
+    uint8_t w[] = {
+        0x80,
+        f,
+        s,
+        th,
+    };
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+}
+//-----------------------
+void Write8x8_clear(int count){
+    uint8_t w[] = {
+        0x40,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+        0b00000000,
+    };
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+    sleep_ms(10);
+    if(count<=0)return;
+    Write8x8_clear(count-1);
+}
+void Write8x8_kresto(int count){
+    uint8_t w[] = {
+        0x40,
+        0b00000000,
+        0b01000010,
+        0b00100100,
+        0b00011000,
+        0b00011000,
+        0b00100100,
+        0b01000010,
+        0b00000000,
+    };
+    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
+    sleep_ms(10);
+    if(count<=0)return;
+    Write8x8_kresto(count-1);
+}
+void MoveCursorToZero(){
+   // i2c.writeto(0x3c, bytes([0x80,0xB0]))    
+    //i2c.writeto(0x3c, bytes([0x80,0x00]))
+    //i2c.writeto(0x3c, bytes([0x80,0x10]))
+    WriteComandSingle(0xB0);
+    WriteComandSingle(0x00);
+    WriteComandSingle(0x10);
+}
+//-------
 void DisplayUpdate(){
 
     uint8_t colpos = 0x14;   
@@ -94,30 +267,15 @@ void DisplayUpdate(){
     };    
     i2c_write_blocking(i2c0,0b0111100,u8ts,sizeof(u8ts)/sizeof(u8ts[0]),false);
     sleep_ms(100);
+    MoveCursorToZero();
     //i2c_write_blocking(i2c0,0b0111100,0x80|0xAE,2,false);
     Write8x8_clear(128);
     //uint8_t dispon[]= {0x80,0xAE};
     //i2c_write_blocking(i2c0,0b0111100,dispon,sizeof(dispon)/sizeof(dispon[0]),false);
-    
+    Write8x8_kresto(128);
 
 }
-void Write8x8_clear(int count){
-    uint8_t w[] = {
-        0x40,
-        0b10000000,
-        0b00000000,
-        0b00000000,
-        0b00010000,
-        0b00000000,
-        0b00000000,
-        0b00000000,
-        0b00000001,
-    };
-    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
-    sleep_ms(100);
-    if(count<=0)return;
-    Write8x8_clear(count-1);
-}
+
 int main() {
     //stdio_init_all();
 
@@ -135,16 +293,28 @@ int main() {
     //
     const uint LED_PIN = PICO_DEFAULT_LED_PIN;
     gpio_init(LED_PIN);
-    gpio_set_dir(LED_PIN, GPIO_OUT);
+    gpio_set_dir(LED_PIN, GPIO_OUT);  
+    gpio_put(LED_PIN, 1);
+    sleep_ms(100);
+    gpio_put(LED_PIN, 0);
+    sleep_ms(10); 
+    DisplayUpdate();
+    gpio_put(LED_PIN, 1);
+    sleep_ms(100);
+    gpio_put(LED_PIN, 0);
+    sleep_ms(10);
+    MoveCursorToZero();
+    
     while (true) {
         gpio_put(LED_PIN, 1);
-        sleep_ms(500);
+        sleep_ms(50);       
+        //GetSingleNomber(lit) ;
+        //PrintLitera(_ws);
+        
+        
         gpio_put(LED_PIN, 0);
-        sleep_ms(100);        
-
-        DisplayUpdate();
-    }
-    
+        sleep_ms(50); 
+    }    
 
 }
 
