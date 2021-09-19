@@ -17,33 +17,61 @@
 
 //KHOnKu
 //#define FIRST_GPIO 2
-const uint8_t BUTTON_L_GPIO =(27);
-const uint8_t BUTTON_R_GPIO =(21);
-const uint8_t BUTTON_U_GPIO =(20);
-const uint8_t BUTTON_D_GPIO =(19);
-const uint8_t BUTTON_OK_GPIO =(18);
+const uint8_t BUTTON_R_GPIO =(13);
+const uint8_t BUTTON_D_GPIO =(21);
+const uint8_t BUTTON_OK_GPIO =(20);
+const uint8_t BUTTON_U_GPIO =(19);
+const uint8_t BUTTON_L_GPIO =(18);
+void InitButtons(){
 
+    // We are using the button to pull down to 0v when pressed, so ensure that when
+    // unpressed, it uses internal pull ups. Otherwise when unpressed, the input will
+    // be floating.
+    uint8_t buttons[] = {
+        BUTTON_R_GPIO,
+        BUTTON_D_GPIO,
+        BUTTON_OK_GPIO,
+        BUTTON_U_GPIO,
+        BUTTON_L_GPIO,
+    };
+    const int buttonsCount = sizeof(buttons)/sizeof(buttons[0]);
+    for(int i=0;i<buttonsCount;i++){
+        uint8_t _b = buttons[i];
+        gpio_init(_b);
+        gpio_set_dir(_b, GPIO_IN);
+        gpio_pull_up(_b);
+    }
+    
+
+}
 int main() {
     
     InitDisplay();
     //кнопки
-    gpio_init(BUTTON_L_GPIO);
-    gpio_set_dir(BUTTON_L_GPIO, GPIO_IN);
-    // We are using the button to pull down to 0v when pressed, so ensure that when
-    // unpressed, it uses internal pull ups. Otherwise when unpressed, the input will
-    // be floating.
-    gpio_pull_up(BUTTON_L_GPIO);
-    gpio_pull_up(BUTTON_R_GPIO);
-    gpio_pull_up(BUTTON_U_GPIO);
-    gpio_pull_up(BUTTON_D_GPIO);
-    gpio_pull_up(BUTTON_OK_GPIO);
+    InitButtons();
 
     while (true) {
         gpio_put(LED_PIN, 1);
-        sleep_ms(10);       
-        GetSingleNomber(0) ;
-        PrintLitera(_ws);
-        
+        sleep_ms(10);
+        Write8x8_clear(0);    
+        //
+        //
+        // Count upwards or downwards depending on button input
+    // We are pulling down on switch active, so invert the get to make
+    // a press count downwards
+    #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
+    if (!gpio_get(BTN_INDEX)) { \
+        GetSingleNomber(NUM_OUT) ; \
+        PrintLitera(_ws); \
+    }    
+        CHECK_BUTTON(BUTTON_R_GPIO, 1);
+        CHECK_BUTTON(BUTTON_D_GPIO, 2);//d
+        CHECK_BUTTON(BUTTON_OK_GPIO, 3);//ok
+        CHECK_BUTTON(BUTTON_U_GPIO, 4);//up
+        CHECK_BUTTON(BUTTON_L_GPIO, 5);//l
+
+    #undef CHECK_BUTTON
+
         
         gpio_put(LED_PIN, 0);
         sleep_ms(10); 

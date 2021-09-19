@@ -18,5 +18,6 @@ extern uint8_t _ws[4];
 void InitDisplay();
 uint8_t *GetSingleNomber (int i);
 void PrintLitera(uint8_t l[] );
+void Write8x8_clear(int count);
 
 #endif //HEADER_H_DISPLAY
