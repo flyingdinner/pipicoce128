@@ -1,5 +1,5 @@
 add_executable(pipicoce
-        pipicoce.c display.c
+        pipicoce.cpp display.cpp
         )
 
 # Pull in our pico_stdlib which pulls in commonly used features

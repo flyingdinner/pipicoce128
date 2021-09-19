@@ -5,9 +5,6 @@
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;
 uint8_t _ws[4] = {0,0,0,0};
 
-// private methods
-void MoveCursorToZero();
-
 
 //KOHCTAHTbI
  const uint8_t SET_CONTRAST =0x81;
@@ -28,15 +25,8 @@ void MoveCursorToZero();
  const uint8_t SET_VCOM_DESEL =0xDB;
  const uint8_t SET_CHARGE_PUMP =0x8D;
 const uint8_t SET_DISP_OFFSET =0x8D;
-int countPerSecond = 0;
 
-void DisplayUpdate();
-
-void CalculateCPS(){
-    countPerSecond = 0;
-    
-}
-void InitDisplay(){
+void Display::InitDisplay(){
 
     #define PIN_SDA 0
     #define PIN_SCL 1
@@ -65,7 +55,7 @@ void InitDisplay(){
     MoveCursorToZero();
 }
 
-uint8_t *GetSingleNomber (int i){ 
+uint8_t *Display::GetSingleNomber (int i){ 
     
     switch (i)
 	{
@@ -151,7 +141,7 @@ uint8_t *GetSingleNomber (int i){
     
 }
 //
-void PrintLitera(uint8_t l[] ){
+void Display::PrintLitera(uint8_t l[] ){
     uint8_t w[5];
     w[0]=0x40;
     w[1]=l[3];
@@ -161,7 +151,7 @@ void PrintLitera(uint8_t l[] ){
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
 //
-void WriteComandSingle(int f){
+void Display::WriteComandSingle(int f){
     uint8_t w[] = {
         0x80,
         f,
@@ -169,7 +159,7 @@ void WriteComandSingle(int f){
     };
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
-void WriteComandDuble(int f,int s){
+void Display::WriteComandDuble(int f,int s){
     uint8_t w[] = {
         0x80,
         f,
@@ -177,7 +167,7 @@ void WriteComandDuble(int f,int s){
     };
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
-void WriteComandTriple(int f,int s, int th){
+void Display::WriteComandTriple(int f,int s, int th){
     uint8_t w[] = {
         0x80,
         f,
@@ -187,7 +177,7 @@ void WriteComandTriple(int f,int s, int th){
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
 //-----------------------
-void Write8x8_clear(int count){
+void Display::Write8x8_clear(int count){
     uint8_t w[] = {
         0x40,
         0b00000000,
@@ -204,7 +194,7 @@ void Write8x8_clear(int count){
     if(count<=0)return;
     Write8x8_clear(count-1);
 }
-void Write8x8_kresto(int count){
+void Display::Write8x8_kresto(int count){
     uint8_t w[] = {
         0x40,
         0b00000000,
@@ -221,7 +211,7 @@ void Write8x8_kresto(int count){
     if(count<=0)return;
     Write8x8_kresto(count-1);
 }
-void MoveCursorToZero(){
+void Display::MoveCursorToZero(){
    // i2c.writeto(0x3c, bytes([0x80,0xB0]))    
     //i2c.writeto(0x3c, bytes([0x80,0x00]))
     //i2c.writeto(0x3c, bytes([0x80,0x10]))
@@ -230,7 +220,7 @@ void MoveCursorToZero(){
     WriteComandSingle(0x10);
 }
 //-------
-void DisplayUpdate(){
+void Display::DisplayUpdate(){
 
     uint8_t colpos = 0x14;   
     int height  = 64;

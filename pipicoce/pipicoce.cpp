@@ -34,7 +34,7 @@ void InitButtons(){
         BUTTON_U_GPIO,
         BUTTON_L_GPIO,
     };
-    const int buttonsCount = sizeof(buttons)/sizeof(buttons[0]);
+    const auto buttonsCount = sizeof(buttons)/sizeof(buttons[0]);
     for(int i=0;i<buttonsCount;i++){
         uint8_t _b = buttons[i];
         gpio_init(_b);
@@ -46,14 +46,14 @@ void InitButtons(){
 }
 int main() {
     
-    InitDisplay();
+    Display::InitDisplay();
     //кнопки
     InitButtons();
 
     while (true) {
         gpio_put(LED_PIN, 1);
         sleep_ms(10);
-        Write8x8_clear(0);    
+        Display::Write8x8_clear(0);    
         //
         //
         // Count upwards or downwards depending on button input
@@ -61,8 +61,8 @@ int main() {
     // a press count downwards
     #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
     if (!gpio_get(BTN_INDEX)) { \
-        GetSingleNomber(NUM_OUT) ; \
-        PrintLitera(_ws); \
+        Display::GetSingleNomber(NUM_OUT) ; \
+        Display::PrintLitera(_ws); \
     }    
         CHECK_BUTTON(BUTTON_R_GPIO, 1);
         CHECK_BUTTON(BUTTON_D_GPIO, 2);//d
