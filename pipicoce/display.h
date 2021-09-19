@@ -10,7 +10,7 @@
 #include "hardware/clocks.h"
 //
 #include "hardware/gpio.h"
-
+#include <string>
 
 extern const uint LED_PIN;
 extern uint8_t _ws[4];
@@ -21,6 +21,8 @@ public:
     static uint8_t *GetSingleNomber (int i);
     static void PrintLitera(uint8_t l[] );
     static void Write8x8_clear(int count);
+    void MoveCursorToPage(uint8_t page);
+    void PrintMenuString(uint8_t spice0,std::string text,uint8_t spice1,std::string selectText,uint8_t spice2,bool selected);
     
 private:
     static void MoveCursorToZero();

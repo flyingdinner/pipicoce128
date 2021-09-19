@@ -1,5 +1,6 @@
 #include "display.h"
-
+#include <iostream>
+#include <string.h> 
 
 // ivar definitions
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;
@@ -25,6 +26,7 @@ uint8_t _ws[4] = {0,0,0,0};
  const uint8_t SET_VCOM_DESEL =0xDB;
  const uint8_t SET_CHARGE_PUMP =0x8D;
 const uint8_t SET_DISP_OFFSET =0x8D;
+
 
 void Display::InitDisplay(){
 
@@ -218,6 +220,27 @@ void Display::MoveCursorToZero(){
     WriteComandSingle(0xB0);
     WriteComandSingle(0x00);
     WriteComandSingle(0x10);
+}
+void Display::MoveCursorToPage(uint8_t page){
+
+    WriteComandSingle(176+page);
+    WriteComandSingle(0x00);
+    WriteComandSingle(0x10);
+}
+void Display::PrintMenuString(uint8_t spice0,std::string text,uint8_t spice1,std::string selectText,uint8_t spice2,bool selected){
+//  +uweituwo<rewrw>  
+// [wrwrerwr]
+
+// [Enterability Symbol] ?
+// [
+//    [Content]
+//    [Brackets Type]
+// ] (TITLE) ?
+// [
+//    [Content]
+//    [Brackets Type]
+// ] (VALUE) ?
+
 }
 //-------
 void Display::DisplayUpdate(){

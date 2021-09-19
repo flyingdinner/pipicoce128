@@ -14,6 +14,8 @@
 
 #include "display.h"
 
+#include <vector>
+
 
 //KHOnKu
 //#define FIRST_GPIO 2
@@ -27,16 +29,14 @@ void InitButtons(){
     // We are using the button to pull down to 0v when pressed, so ensure that when
     // unpressed, it uses internal pull ups. Otherwise when unpressed, the input will
     // be floating.
-    uint8_t buttons[] = {
+    std::vector<uint8_t> buttons = {
         BUTTON_R_GPIO,
         BUTTON_D_GPIO,
         BUTTON_OK_GPIO,
         BUTTON_U_GPIO,
         BUTTON_L_GPIO,
     };
-    const auto buttonsCount = sizeof(buttons)/sizeof(buttons[0]);
-    for(int i=0;i<buttonsCount;i++){
-        uint8_t _b = buttons[i];
+    for(auto _b : buttons){
         gpio_init(_b);
         gpio_set_dir(_b, GPIO_IN);
         gpio_pull_up(_b);
