@@ -21,13 +21,14 @@ public:
     static uint8_t *GetSingleNomber (int i);
     static void PrintLitera(uint8_t l[] );
     static void Write8x8_clear(int count);
+    
 private:
     static void MoveCursorToZero();
     static void DisplayUpdate();
 
-    static void WriteComandSingle(int f);
-    static void WriteComandDuble(int f,int s);
-    static void WriteComandTriple(int f,int s, int th);
+    static void WriteComandSingle(uint8_t f);
+    static void WriteComandDuble(uint8_t f,uint8_t s);
+    static void WriteComandTriple(uint8_t f,uint8_t s, uint8_t th);
     static void Write8x8_kresto(int count);
 };
 

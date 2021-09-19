@@ -151,7 +151,7 @@ void Display::PrintLitera(uint8_t l[] ){
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
 //
-void Display::WriteComandSingle(int f){
+void Display::WriteComandSingle(uint8_t f){
     uint8_t w[] = {
         0x80,
         f,
@@ -159,7 +159,7 @@ void Display::WriteComandSingle(int f){
     };
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
-void Display::WriteComandDuble(int f,int s){
+void Display::WriteComandDuble(uint8_t f,uint8_t s){
     uint8_t w[] = {
         0x80,
         f,
@@ -167,7 +167,7 @@ void Display::WriteComandDuble(int f,int s){
     };
     i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
 }
-void Display::WriteComandTriple(int f,int s, int th){
+void Display::WriteComandTriple(uint8_t f,uint8_t s, uint8_t th){
     uint8_t w[] = {
         0x80,
         f,
@@ -223,7 +223,7 @@ void Display::MoveCursorToZero(){
 void Display::DisplayUpdate(){
 
     uint8_t colpos = 0x14;   
-    int height  = 64;
+    const int height  = 64;
     int addr = 0x3C;
     //bool external_vcc = false;
     bool reset = false;
