@@ -1,5 +1,8 @@
 add_executable(pipicoce
-        pipicoce.cpp display.cpp menudisplay/menuString.cpp
+        pipicoce.cpp 
+        display.cpp
+        menudisplay/menuString.cpp
+        symlib/symlib.cpp
         )
 
 # Pull in our pico_stdlib which pulls in commonly used features

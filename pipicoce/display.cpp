@@ -1,6 +1,5 @@
 #include "display.h"
 #include <iostream>
-#include <string.h> 
 
 // ivar definitions
 const uint LED_PIN = PICO_DEFAULT_LED_PIN;
@@ -197,21 +196,12 @@ void Display::Write8x8_clear(int count){
     Write8x8_clear(count-1);
 }
 void Display::Write8x8_kresto(int count){
-    uint8_t w[] = {
-        0x40,
-        0b00000000,
-        0b01000010,
-        0b00100100,
-        0b00011000,
-        0b00011000,
-        0b00100100,
-        0b01000010,
-        0b00000000,
-    };
-    i2c_write_blocking(i2c0,0b0111100,w,sizeof(w)/sizeof(w[0]),false);
-    //sleep_ms(10);
-    if(count<=0)return;
-    Write8x8_kresto(count-1);
+    SymLib::LineData line;
+    SymLib::LineData kresto = SymLib::LineDataOfSpice(SymLib::Spice::kresto);
+    for(int i = 0; i < count; i++) {
+        line = SymLib::Merge(line, kresto);
+    }
+    WriteLine(line);
 }
 void Display::MoveCursorToZero(){
    // i2c.writeto(0x3c, bytes([0x80,0xB0]))    
@@ -311,4 +301,9 @@ void Display::DisplayUpdate(){
     //i2c_write_blocking(i2c0,0b0111100,dispon,sizeof(dispon)/sizeof(dispon[0]),false);
     Write8x8_kresto(128);
 
+}
+
+void Display::WriteLine(const SymLib::LineData &lineData) {
+    auto fullData = SymLib::Merge(SymLib::LineData{ 0x40 }, lineData);
+    i2c_write_blocking(i2c0, 0b0111100, fullData.data(), fullData.size(), false);
 }

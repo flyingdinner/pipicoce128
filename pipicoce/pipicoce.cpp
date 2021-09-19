@@ -49,11 +49,14 @@ int main() {
     Display::InitDisplay();
     //кнопки
     InitButtons();
-
+    Display::Write8x8_kresto(128);  
+        sleep_ms(1000); 
     while (true) {
         gpio_put(LED_PIN, 1);
         sleep_ms(10);
         Display::Write8x8_clear(0);    
+
+        
         //
         //
         // Count upwards or downwards depending on button input
