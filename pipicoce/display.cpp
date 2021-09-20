@@ -217,20 +217,24 @@ void Display::MoveCursorToPage(uint8_t page){
     WriteComandSingle(0x00);
     WriteComandSingle(0x10);
 }
-void Display::PrintMenuString(uint8_t spice0,std::string text,uint8_t spice1,std::string selectText,uint8_t spice2,bool selected){
-//  +uweituwo<rewrw>  
-// [wrwrerwr]
+//fixme
 
-// [Enterability Symbol] ?
-// [
-//    [Content]
-//    [Brackets Type]
-// ] (TITLE) ?
-// [
-//    [Content]
-//    [Brackets Type]
-// ] (VALUE) ?
+void Display::PrintMenuString(MenuStringDesign linemsd,bool selected){
+SymLib::LineData line;
+SymLib::LineData spice = SymLib::LineDataOfSpice(linemsd.spice0);
+line = SymLib::Merge(line,spice);
+//--->> string 0<<---
 
+//
+spice = SymLib::LineDataOfSpice(linemsd.spice1);
+line = SymLib::Merge(line,spice);
+//--->> string 1<<---
+
+//
+spice = SymLib::LineDataOfSpice(linemsd.spice2);
+line = SymLib::Merge(line,spice);
+//--------------
+WriteLine(line);
 }
 //-------
 void Display::DisplayUpdate(){

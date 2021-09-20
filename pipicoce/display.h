@@ -15,7 +15,13 @@
 
 extern const uint LED_PIN;
 extern uint8_t _ws[4];
-
+struct MenuStringDesign{
+SymLib::Spice spice0;
+std::string text0;
+SymLib::Spice spice1;
+std::string text1;
+SymLib::Spice spice2;
+};
 class Display {
 public:
     static void InitDisplay();
@@ -24,7 +30,8 @@ public:
     static void Write8x8_clear(int count);
     static void Write8x8_kresto(int count);
     static void MoveCursorToPage(uint8_t page);
-    static void PrintMenuString(uint8_t spice0,std::string text,uint8_t spice1,std::string selectText,uint8_t spice2,bool selected);
+    //
+    static void PrintMenuString(MenuStringDesign linemsd,bool selected);
 
 private:
     static void MoveCursorToZero();

@@ -74,8 +74,14 @@ int main() {
         CHECK_BUTTON(BUTTON_L_GPIO, 5);//l
 
     #undef CHECK_BUTTON
+    MenuStringDesign _msd ;
+    _msd.spice0 = SymLib::Spice::kresto;
 
-        
+    _msd.spice1 = SymLib::Spice::leftSelect;
+
+    _msd.spice2 = SymLib::Spice::rightSelect;
+
+     Display::PrintMenuString(_msd,false) ;  
         gpio_put(LED_PIN, 0);
         sleep_ms(10); 
     }    

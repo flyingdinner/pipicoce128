@@ -5,7 +5,7 @@
 #include <vector> 
 
 #include "spice.h"
-
+#include <string>
 namespace SymLib {
 
 typedef std::vector<uint8_t> LineData;
