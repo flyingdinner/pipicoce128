@@ -51,8 +51,9 @@ int main() {
     InitButtons();
     Display::Write8x8_kresto(128);  
         sleep_ms(1000); 
+    float ledPower=0;
     while (true) {
-        gpio_put(LED_PIN, 1);
+        gpio_put(LED_PIN, ledPower);
         sleep_ms(10);
         Display::Write8x8_clear(0);    
 
@@ -62,6 +63,14 @@ int main() {
         // Count upwards or downwards depending on button input
     // We are pulling down on switch active, so invert the get to make
     // a press count downwards
+    Display::MoveCursorToPage (1);
+    MenuStringDesign _msd ;
+    _msd.spice0 = SymLib::Spice::kresto;
+    _msd.text0 = "ABCCBA";
+    _msd.spice1 = SymLib::Spice::leftSelect;
+    _msd.text1 = "ABACCA";  
+    _msd.spice2 = SymLib::Spice::rightSelect;
+
     #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
     if (!gpio_get(BTN_INDEX)) { \
         Display::GetSingleNomber(NUM_OUT) ; \
@@ -74,15 +83,12 @@ int main() {
         CHECK_BUTTON(BUTTON_L_GPIO, 5);//l
 
     #undef CHECK_BUTTON
-    MenuStringDesign _msd ;
-    _msd.spice0 = SymLib::Spice::kresto;
-
-    _msd.spice1 = SymLib::Spice::leftSelect;
-
-    _msd.spice2 = SymLib::Spice::rightSelect;
-
+    ledPower=ledPower+0.05f;
+    if(ledPower>1){
+        ledPower=0;
+    }
      Display::PrintMenuString(_msd,false) ;  
-        gpio_put(LED_PIN, 0);
+        gpio_put(LED_PIN, ledPower);
         sleep_ms(10); 
     }    
 

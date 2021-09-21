@@ -224,12 +224,23 @@ SymLib::LineData line;
 SymLib::LineData spice = SymLib::LineDataOfSpice(linemsd.spice0);
 line = SymLib::Merge(line,spice);
 //--->> string 0<<---
+for (size_t i = 0; i < linemsd.text0.length(); i++)
+{
+    auto c = linemsd.text0.operator[](i);
+    line = SymLib::Merge(line,SymLib::LineDataOfSymbol(c));
+    /* code */
+}
 
 //
 spice = SymLib::LineDataOfSpice(linemsd.spice1);
 line = SymLib::Merge(line,spice);
 //--->> string 1<<---
-
+for (size_t i = 0; i < linemsd.text1.length(); i++)
+{
+    auto c = linemsd.text1.operator[](i);
+    line = SymLib::Merge(line,SymLib::LineDataOfSymbol(c));
+    /* code */
+}
 //
 spice = SymLib::LineDataOfSpice(linemsd.spice2);
 line = SymLib::Merge(line,spice);
