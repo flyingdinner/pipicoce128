@@ -66,10 +66,12 @@ int main() {
     Display::MoveCursorToPage (1);
     MenuStringDesign _msd ;
     _msd.spice0 = SymLib::Spice::kresto;
-    _msd.text0 = "ABCCBA";
+    _msd.text0 = "PIPICOCE";
     _msd.spice1 = SymLib::Spice::leftSelect;
-    _msd.text1 = "ABACCA";  
+    _msd.text1 = "OFF";  
     _msd.spice2 = SymLib::Spice::rightSelect;
+    Display::PrintMenuString(_msd,false) ;
+
 
     #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
     if (!gpio_get(BTN_INDEX)) { \
@@ -87,7 +89,7 @@ int main() {
     if(ledPower>1){
         ledPower=0;
     }
-     Display::PrintMenuString(_msd,false) ;  
+       
         gpio_put(LED_PIN, ledPower);
         sleep_ms(10); 
     }    
