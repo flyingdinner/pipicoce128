@@ -14,7 +14,7 @@ SymLib::Spice spice2;
 
 class MenuString {
 public:
-static SymLib::LineData GetMenuString(const MenuStringDesign linemsd,bool selected);
+static SymLib::LineData GetMenuString(const MenuStringDesign &linemsd,bool selected);
 
 SymLib::Spice s0;
 std::string text;

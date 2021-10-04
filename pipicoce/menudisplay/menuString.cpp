@@ -8,7 +8,7 @@ SymLib::LineData MenuString::toLineData() const
 //
 
 //
-SymLib::LineData MenuString::GetMenuString(const MenuStringDesign linemsd, bool selected)
+SymLib::LineData MenuString::GetMenuString(const MenuStringDesign &linemsd, bool selected)
 {
     //get line of data
     SymLib::LineData line;
