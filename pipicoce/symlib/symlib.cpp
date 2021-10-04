@@ -16,6 +16,44 @@ LineData LineDataOfSpice(Spice spice) {
         0b01000010,
         0b00000000,
         };
+        case Spice::goinPage:
+        return LineData {
+        0b01111111,
+        0b01000001,
+        0b01100001,
+        0b00110010,
+        0b00011100,
+        0b00001000,
+        0b00000000,
+        
+        };
+        case Spice::constInfo:
+        return LineData {
+        0b01111111,
+        0b01000001,
+        0b00000000,
+       
+        };
+        case Spice::toombleron:
+        return LineData {
+        0b00000000,
+        0b01111111,
+        0b01000101,
+        0b01000101,
+        0b01000101,
+        0b01111111,        
+        0b00000000,
+        };
+         case Spice::toombleroff:
+        return LineData {
+        0b00000000,
+        0b01111111,
+        0b01011111,
+        0b01011111,
+        0b01011111,
+        0b01111111,        
+        0b00000000,
+        };
     case Spice::leftSelect:
         return LineData {
         0b00000000,
@@ -66,6 +104,9 @@ LineData LineDataOfSpice(Spice spice) {
 }
 
 LineData LineDataOfSymbol(char symbol) {
+    if (symbol >= 'a' && symbol <= 'z') {
+        return LineDataOfSymbol(symbol - 'a' + 'A');
+    }
     switch (symbol)
     {
         case ('A'):

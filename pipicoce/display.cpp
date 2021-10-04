@@ -195,13 +195,17 @@ void Display::Write8x8_clear(int count){
     if(count<=0)return;
     Write8x8_clear(count-1);
 }
+void Display::WriteLine(const SymLib::LineData &lineData) {
+    auto fullData = SymLib::Merge(SymLib::LineData{ 0x40 }, lineData);
+    i2c_write_blocking(i2c0, 0b0111100, fullData.data(), fullData.size(), false);
+}
 void Display::Write8x8_kresto(int count){
     SymLib::LineData line;
     SymLib::LineData kresto = SymLib::LineDataOfSpice(SymLib::Spice::kresto);
     for(int i = 0; i < count; i++) {
         line = SymLib::Merge(line, kresto);
     }
-    WriteLine(line);
+   WriteLine(line);
 }
 void Display::MoveCursorToZero(){
    // i2c.writeto(0x3c, bytes([0x80,0xB0]))    
@@ -217,37 +221,7 @@ void Display::MoveCursorToPage(uint8_t page){
     WriteComandSingle(0x00);
     WriteComandSingle(0x10);
 }
-//fixme
 
-void Display::PrintMenuString(MenuStringDesign linemsd,bool selected){
-SymLib::LineData line;
-SymLib::LineData spice = SymLib::LineDataOfSpice(linemsd.spice0);
-line = SymLib::Merge(line,spice);
-//--->> string 0<<---
-for (size_t i = 0; i < linemsd.text0.length(); i++)
-{
-    auto c = linemsd.text0.operator[](i);
-    line = SymLib::Merge(line,SymLib::LineDataOfSymbol(c));
-    /* code */
-}
-
-//
-spice = SymLib::LineDataOfSpice(linemsd.spice1);
-line = SymLib::Merge(line,spice);
-//--->> string 1<<---
-for (size_t i = 0; i < linemsd.text1.length(); i++)
-{
-    auto c = linemsd.text1.operator[](i);
-    line = SymLib::Merge(line,SymLib::LineDataOfSymbol(c));
-    /* code */
-}
-//
-spice = SymLib::LineDataOfSpice(linemsd.spice2);
-line = SymLib::Merge(line,spice);
-//--------------
-WriteLine(line);
-}
-//-------
 void Display::DisplayUpdate(){
 
     uint8_t colpos = 0x14;   
@@ -318,7 +292,4 @@ void Display::DisplayUpdate(){
 
 }
 
-void Display::WriteLine(const SymLib::LineData &lineData) {
-    auto fullData = SymLib::Merge(SymLib::LineData{ 0x40 }, lineData);
-    i2c_write_blocking(i2c0, 0b0111100, fullData.data(), fullData.size(), false);
-}
+

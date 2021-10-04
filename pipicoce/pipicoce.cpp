@@ -5,6 +5,7 @@
  */
 #include <stdio.h>
 #include <string.h>
+#include "menudisplay/menuString.hpp"
 #include "pico/stdlib.h"
 #include "hardware/i2c.h"
 #include "pico/binary_info.h"
@@ -15,6 +16,7 @@
 #include "display.h"
 
 #include <vector>
+
 
 
 //KHOnKu
@@ -44,6 +46,8 @@ void InitButtons(){
     
 
 }
+
+//
 int main() {
     
     Display::InitDisplay();
@@ -70,9 +74,12 @@ int main() {
     _msd.spice1 = SymLib::Spice::leftSelect;
     _msd.text1 = "OFF";  
     _msd.spice2 = SymLib::Spice::rightSelect;
-    Display::PrintMenuString(_msd,false) ;
-
-
+    SymLib::LineData ld;
+    ld =MenuString::GetMenuString(_msd,false);
+    Display::WriteLine(ld );
+    Display::MoveCursorToPage (2);
+    ld =MenuString::GetMenuString(_msd,true);
+    Display::WriteLine(ld );
     #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
     if (!gpio_get(BTN_INDEX)) { \
         Display::GetSingleNomber(NUM_OUT) ; \

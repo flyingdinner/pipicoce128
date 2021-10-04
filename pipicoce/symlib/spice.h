@@ -7,7 +7,10 @@ namespace SymLib {
 
 enum class Spice {
             kresto,
-
+            goinPage,
+            constInfo,
+            toombleron,
+            toombleroff,
             leftSelect,
             rightSelect,
             locked,
