@@ -17,16 +17,18 @@
 
 #include <vector>
 
-
-
 //KHOnKu
 //#define FIRST_GPIO 2
-const uint8_t BUTTON_R_GPIO =(13);
-const uint8_t BUTTON_D_GPIO =(21);
-const uint8_t BUTTON_OK_GPIO =(20);
-const uint8_t BUTTON_U_GPIO =(19);
-const uint8_t BUTTON_L_GPIO =(18);
-void InitButtons(){
+const uint8_t BUTTON_R_GPIO = (13);
+const uint8_t BUTTON_D_GPIO = (21);
+const uint8_t BUTTON_OK_GPIO = (20);
+const uint8_t BUTTON_U_GPIO = (19);
+const uint8_t BUTTON_L_GPIO = (18);
+//menu---------------------------
+MenuPage *currentMenu;
+//end menu ----------------------
+void InitButtons()
+{
 
     // We are using the button to pull down to 0v when pressed, so ensure that when
     // unpressed, it uses internal pull ups. Otherwise when unpressed, the input will
@@ -38,68 +40,68 @@ void InitButtons(){
         BUTTON_U_GPIO,
         BUTTON_L_GPIO,
     };
-    for(auto _b : buttons){
+    for (auto _b : buttons)
+    {
         gpio_init(_b);
         gpio_set_dir(_b, GPIO_IN);
         gpio_pull_up(_b);
     }
-    
-
 }
 
 //
-int main() {
-    
+int main()
+{
+
     Display::InitDisplay();
     //кнопки
     InitButtons();
-    Display::Write8x8_kresto(128);  
-        sleep_ms(1000); 
-    float ledPower=0;
-    while (true) {
+    Display::Write8x8_kresto(128);
+    sleep_ms(1000);
+    float ledPower = 0;
+    while (true)
+    {
         gpio_put(LED_PIN, ledPower);
         sleep_ms(10);
-        Display::Write8x8_clear(0);    
+        Display::Write8x8_clear(0);
 
-        
         //
         //
         // Count upwards or downwards depending on button input
-    // We are pulling down on switch active, so invert the get to make
-    // a press count downwards
-    Display::MoveCursorToPage (1);
-    MenuStringDesign _msd ;
-    _msd.spice0 = SymLib::Spice::kresto;
-    _msd.text0 = "PIPICOCE";
-    _msd.spice1 = SymLib::Spice::leftSelect;
-    _msd.text1 = "OFF";  
-    _msd.spice2 = SymLib::Spice::rightSelect;
-    SymLib::LineData ld;
-    ld =MenuString::GetMenuString(_msd,false);
-    Display::WriteLine(ld );
-    Display::MoveCursorToPage (2);
-    ld =MenuString::GetMenuString(_msd,true);
-    Display::WriteLine(ld );
-    #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)  \
-    if (!gpio_get(BTN_INDEX)) { \
-        Display::GetSingleNomber(NUM_OUT) ; \
-        Display::PrintLitera(_ws); \
-    }    
-        CHECK_BUTTON(BUTTON_R_GPIO, 1);
-        CHECK_BUTTON(BUTTON_D_GPIO, 2);//d
-        CHECK_BUTTON(BUTTON_OK_GPIO, 3);//ok
-        CHECK_BUTTON(BUTTON_U_GPIO, 4);//up
-        CHECK_BUTTON(BUTTON_L_GPIO, 5);//l
-
-    #undef CHECK_BUTTON
-    ledPower=ledPower+0.05f;
-    if(ledPower>1){
-        ledPower=0;
+        // We are pulling down on switch active, so invert the get to make
+        // a press count downwards
+        Display::MoveCursorToPage(1);
+        MenuStringDesign _msd;
+        _msd.spice0 = SymLib::Spice::kresto;
+        _msd.text0 = "PIPICOCE";
+        _msd.spice1 = SymLib::Spice::leftSelect;
+        _msd.text1 = "OFF";
+        _msd.spice2 = SymLib::Spice::rightSelect;
+        SymLib::LineData ld;
+        ld = MenuString::GetMenuString(_msd, false);
+        Display::WriteLine(ld);
+        Display::MoveCursorToPage(2);
+        ld = MenuString::GetMenuString(_msd, true);
+        Display::WriteLine(ld);
+#define CHECK_BUTTON(BTN_INDEX, NUM_OUT)   \
+    if (!gpio_get(BTN_INDEX))              \
+    {                                      \
+        Display::GetSingleNomber(NUM_OUT); \
+        Display::PrintLitera(_ws);         \
     }
-       
+        CHECK_BUTTON(BUTTON_R_GPIO, 1);
+        CHECK_BUTTON(BUTTON_D_GPIO, 2);  //d
+        CHECK_BUTTON(BUTTON_OK_GPIO, 3); //ok
+        CHECK_BUTTON(BUTTON_U_GPIO, 4);  //up
+        CHECK_BUTTON(BUTTON_L_GPIO, 5);  //l
+
+#undef CHECK_BUTTON
+        ledPower = ledPower + 0.05f;
+        if (ledPower > 1)
+        {
+            ledPower = 0;
+        }
+
         gpio_put(LED_PIN, ledPower);
-        sleep_ms(10); 
-    }    
-
+        sleep_ms(10);
+    }
 }
-

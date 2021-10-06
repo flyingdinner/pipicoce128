@@ -6,6 +6,8 @@
 namespace SymLib {
 
 enum class Spice {
+            buttonon,
+            buttonoff,
             kresto,
             goinPage,
             constInfo,
