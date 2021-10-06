@@ -26,6 +26,10 @@ const uint8_t BUTTON_U_GPIO = (19);
 const uint8_t BUTTON_L_GPIO = (18);
 //menu---------------------------
 MenuPage *currentMenu;
+MenuString mainMenu;
+//
+Input currentinput;
+//MenuPage menucollection[10];
 //end menu ----------------------
 void InitButtons()
 {
@@ -57,44 +61,48 @@ int main()
     InitButtons();
     Display::Write8x8_kresto(128);
     sleep_ms(1000);
+    //
+    mainMenu.GenerateStartMenu();
+    currentMenu = &mainMenu.pageCollection[0];
+    mainMenu.maininput = &currentinput;
+    //
     float ledPower = 0;
     while (true)
     {
+        currentinput.right = !gpio_get(BUTTON_R_GPIO);
+        currentinput.down = !gpio_get(BUTTON_D_GPIO);
+        currentinput.ok = !gpio_get(BUTTON_OK_GPIO);
+        currentinput.up = !gpio_get(BUTTON_U_GPIO);
+        currentinput.left = !gpio_get(BUTTON_L_GPIO);
+        //
         gpio_put(LED_PIN, ledPower);
-        sleep_ms(10);
+        //sleep_ms(10);
         Display::Write8x8_clear(0);
 
-        //
-        //
-        // Count upwards or downwards depending on button input
-        // We are pulling down on switch active, so invert the get to make
-        // a press count downwards
-        Display::MoveCursorToPage(1);
-        MenuStringDesign _msd;
-        _msd.spice0 = SymLib::Spice::kresto;
-        _msd.text0 = "PIPICOCE";
-        _msd.spice1 = SymLib::Spice::leftSelect;
-        _msd.text1 = "OFF";
-        _msd.spice2 = SymLib::Spice::rightSelect;
-        SymLib::LineData ld;
-        ld = MenuString::GetMenuString(_msd, false);
-        Display::WriteLine(ld);
-        Display::MoveCursorToPage(2);
-        ld = MenuString::GetMenuString(_msd, true);
-        Display::WriteLine(ld);
-#define CHECK_BUTTON(BTN_INDEX, NUM_OUT)   \
-    if (!gpio_get(BTN_INDEX))              \
-    {                                      \
-        Display::GetSingleNomber(NUM_OUT); \
-        Display::PrintLitera(_ws);         \
-    }
-        CHECK_BUTTON(BUTTON_R_GPIO, 1);
-        CHECK_BUTTON(BUTTON_D_GPIO, 2);  //d
-        CHECK_BUTTON(BUTTON_OK_GPIO, 3); //ok
-        CHECK_BUTTON(BUTTON_U_GPIO, 4);  //up
-        CHECK_BUTTON(BUTTON_L_GPIO, 5);  //l
+        for (size_t i = 0; i < 8; i++)
+        {
+            bool _selected = (i == currentMenu->selectedStringNumber);
+            SymLib::LineData ld;
+            ld = MenuString::GetMenuString(currentMenu->strings[i], _selected);
+            Display::MoveCursorToPage(i);
+            Display::WriteLine(ld);
+        }
+        
 
-#undef CHECK_BUTTON
+        // #define CHECK_BUTTON(BTN_INDEX, NUM_OUT)   \
+//     if (!gpio_get(BTN_INDEX))              \
+//     {                                      \
+//         Display::GetSingleNomber(NUM_OUT); \
+//         Display::PrintLitera(_ws);         \
+//     }
+        //         CHECK_BUTTON(BUTTON_R_GPIO, 1);
+        //         CHECK_BUTTON(BUTTON_D_GPIO, 2);  //d
+        //         CHECK_BUTTON(BUTTON_OK_GPIO, 3); //ok
+        //         CHECK_BUTTON(BUTTON_U_GPIO, 4);  //up
+        //         CHECK_BUTTON(BUTTON_L_GPIO, 5);  //l
+
+        // #undef CHECK_BUTTON
+
         ledPower = ledPower + 0.05f;
         if (ledPower > 1)
         {
@@ -102,6 +110,6 @@ int main()
         }
 
         gpio_put(LED_PIN, ledPower);
-        sleep_ms(10);
+        //sleep_ms(10);
     }
 }

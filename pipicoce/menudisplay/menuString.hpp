@@ -14,19 +14,28 @@ SymLib::Spice spice2;
 uint8_t id;
 //MenuPage *nextmenu;
 };
-struct MenuPage{
+struct MenuPage {
     uint8_t selectedStringNumber;
     std::string name;
-    MenuStringDesign strings[];    
+    MenuStringDesign strings[8];    
 };
-
+//input
+struct Input{
+    bool up     = false;
+    bool down   = false;
+    bool left   = false;
+    bool right  = false;
+    bool ok     = false;
+};
 class MenuString {
 public:
+Input *maininput;
 static SymLib::LineData GetMenuString(const MenuStringDesign &linemsd,bool selected);
 
 SymLib::Spice s0;
 std::string text;
-MenuPage pageCollection[];
+MenuPage pageCollection[10];
 SymLib::LineData toLineData() const;
+void GenerateStartMenu();
 };
 #endif //HEADER_H_MENUSTRING

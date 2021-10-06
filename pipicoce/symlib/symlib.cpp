@@ -138,6 +138,13 @@ namespace SymLib
         }
         switch (symbol)
         {
+            case ('_'):
+            return LineData{
+                0b01000000,
+                0b01000000,
+                0b01000000,
+                0b00000000,
+        };
         case ('A'):
             return LineData{
                 0b01111110,
