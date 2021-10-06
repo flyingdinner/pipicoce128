@@ -29,13 +29,13 @@ struct Input{
 };
 class MenuString {
 public:
-Input *maininput;
+//Input *maininput;
 static SymLib::LineData GetMenuString(const MenuStringDesign &linemsd,bool selected);
 
 SymLib::Spice s0;
 std::string text;
 MenuPage pageCollection[10];
 SymLib::LineData toLineData() const;
-void GenerateStartMenu();
+void GenerateStartMenu(Input &pipicoInput);
 };
 #endif //HEADER_H_MENUSTRING

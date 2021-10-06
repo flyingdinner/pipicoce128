@@ -62,9 +62,9 @@ int main()
     Display::Write8x8_kresto(128);
     sleep_ms(1000);
     //
-    mainMenu.GenerateStartMenu();
+    mainMenu.GenerateStartMenu(currentinput);
     currentMenu = &mainMenu.pageCollection[0];
-    mainMenu.maininput = &currentinput;
+    //mainMenu.maininput = &currentinput;
     //
     float ledPower = 0;
     while (true)

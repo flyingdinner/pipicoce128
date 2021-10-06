@@ -110,8 +110,9 @@ SymLib::LineData MenuString::GetMenuString(const MenuStringDesign &linemsd, bool
 }
 //~~~~~~~~~~~~ GENERATOR ~~~~~~~~~~~~~~~~~~~~
 //------------------MENU---------------------
-void MenuString::GenerateStartMenu()
+void MenuString::GenerateStartMenu(Input &pipicoInput)
 {
+    maininput = &pipicoInput;
     MenuPage _mp;
     //
     _mp.name = "buttons_test";
