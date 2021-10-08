@@ -37,5 +37,6 @@ std::string text;
 MenuPage pageCollection[10];
 SymLib::LineData toLineData() const;
 void GenerateStartMenu(Input &pipicoInput);
+
 };
 #endif //HEADER_H_MENUSTRING

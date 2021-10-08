@@ -55,47 +55,48 @@ SymLib::LineData MenuString::GetMenuString(const MenuStringDesign &linemsd, bool
             spice = SymLib::LineDataOfSpice(SymLib::Spice::buttonoff);
         }
         line = SymLib::Merge(line, spice);
-        //add text
+        //add text#0
         {
             for (size_t i = 0; i < linemsd.text0.length(); i++)
             {
                 auto c = linemsd.text0[i];
-                line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));                
+                line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));
             }
             //
             spice = SymLib::LineDataOfSpice(linemsd.spice1);
             line = SymLib::Merge(line, spice);
         }
 
-        return line;
+        //return line;
         break;
 
     default:
         spice = SymLib::LineDataOfSpice(linemsd.spice0);
         line = SymLib::Merge(line, spice);
+
+        for (size_t i = 0; i < linemsd.text0.length(); i++)
+        {
+            auto c = linemsd.text0[i];
+            line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));
+            /* code */
+        }
         break;
     }
     //old _------------------------------------
-    for (size_t i = 0; i < linemsd.text0.length(); i++)
-    {
-        auto c = linemsd.text0[i];
-        line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));
-        /* code */
-    }
 
     //
-    spice = SymLib::LineDataOfSpice(linemsd.spice1);
-    line = SymLib::Merge(line, spice);
+    //spice = SymLib::LineDataOfSpice(linemsd.spice1);
+    //line = SymLib::Merge(line, spice);
     //--->> string 1<<---
-    for (size_t i = 0; i < linemsd.text1.length(); i++)
-    {
-        auto c = linemsd.text1[i];
-        line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));
-        /* code */
-    }
+    //for (size_t i = 0; i < linemsd.text1.length(); i++)
+    //{
+    //   auto c = linemsd.text1[i];
+    //   line = SymLib::Merge(line, SymLib::LineDataOfSymbol(c));
+
+    //}
     //
-    spice = SymLib::LineDataOfSpice(linemsd.spice2);
-    line = SymLib::Merge(line, spice);
+    //spice = SymLib::LineDataOfSpice(linemsd.spice2);
+    //line = SymLib::Merge(line, spice);
     //--------------if inversion------------
     if (selected)
     {

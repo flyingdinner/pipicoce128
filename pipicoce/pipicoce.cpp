@@ -26,9 +26,11 @@ const uint8_t BUTTON_U_GPIO = (19);
 const uint8_t BUTTON_L_GPIO = (18);
 //menu---------------------------
 MenuPage *currentMenu;
+
 MenuString mainMenu;
 //
 Input currentinput;
+Input oldInput;
 //MenuPage menucollection[10];
 //end menu ----------------------
 void InitButtons()
@@ -51,7 +53,41 @@ void InitButtons()
         gpio_pull_up(_b);
     }
 }
+void MoveCursor(bool up){
+    if (up){
+        currentMenu->selectedStringNumber++;
+        if(currentMenu->selectedStringNumber>7){
+            currentMenu->selectedStringNumber = 0;
+        }
 
+     return;   
+    } 
+        if(currentMenu->selectedStringNumber==0){
+            currentMenu->selectedStringNumber = 7;
+        }else{
+            currentMenu->selectedStringNumber--;
+        }
+       
+        
+    
+}
+//
+void UpdateButtons(){
+    if(currentinput.up !=oldInput.up) {
+        if(currentinput.up){
+            MoveCursor(false);
+        }else{
+
+        }
+    }
+    if(currentinput.down !=oldInput.down) {
+        if(currentinput.down){
+            MoveCursor(true);
+        }else{
+
+        }
+    }
+}
 //
 int main()
 {
@@ -64,8 +100,9 @@ int main()
     //
     mainMenu.GenerateStartMenu(currentinput);
     currentMenu = &mainMenu.pageCollection[0];
-    //mainMenu.maininput = &currentinput;
-    //
+    //old
+    oldInput = currentinput;
+    Display::Write8x8_clear(128);
     float ledPower = 0;
     while (true)
     {
@@ -77,8 +114,11 @@ int main()
         //
         gpio_put(LED_PIN, ledPower);
         //sleep_ms(10);
-        Display::Write8x8_clear(0);
-
+        UpdateButtons();
+        //
+        
+        oldInput = currentinput;
+        //
         for (size_t i = 0; i < 8; i++)
         {
             bool _selected = (i == currentMenu->selectedStringNumber);
@@ -86,6 +126,7 @@ int main()
             ld = MenuString::GetMenuString(currentMenu->strings[i], _selected);
             Display::MoveCursorToPage(i);
             Display::WriteLine(ld);
+            //Display::Write8x8_clear(1);
         }
         
 
@@ -109,7 +150,7 @@ int main()
             ledPower = 0;
         }
 
-        gpio_put(LED_PIN, ledPower);
+        gpio_put(LED_PIN, 1-ledPower);
         //sleep_ms(10);
     }
 }
